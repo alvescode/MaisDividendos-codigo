@@ -26,46 +26,52 @@ async function busca_dados_do_ticker(ticker_param) {
   let info;
   const url = `${baseUrl}/acoes/${ticker_param}`;
   console.log(url);
+
   try {
     const response = await fetch(url);
 
     if (!response.ok) {
       throw new Error(`Falha na requisição. Status: ${response.status}`);
     }
-    // Alterações principais:
-    // Verificação do status HTTP: Garante que a resposta da requisição foi bem-sucedida antes de tentar processá-la.
-    // Checagem da existência do script e do datatable: Previne tentativas de acesso a elementos inexistentes no DOM.
-    // Tratamento do JSON.parse: Adiciona um bloco try-catch separado para capturar erros ao processar o JSON.
-    // Log de erros detalhado: O objeto erro contém mais informações sobre o que pode ter dado errado.
 
     const html = await response.text();
     const $ = load(html);
-    const node = 30;
-    const script = $("script")[node];
 
-    if (!script || !script.children || !script.children[0]) {
-      throw { message: `Script node ${node} não encontrado ou sem conteúdo.` };
+    const nodesToTry = [30, 29, 31];
+    let scriptData = null;
+
+    for (const node of nodesToTry) {
+      const script = $("script")[node];
+      if (script && script.children && script.children[0]) {
+        scriptData = script.children[0].data;
+        break;
+      }
     }
-    const rawData = script.children[0].data
-      .slice(31)
-      .replace(/'/g, '"')
-      .replace(";", "");
-    console.log(script.children[0].data);
 
-    info = await JSON.parse(
-      script.children[0].data.slice(31).replace(/'/g, '"').replace(";", "")
-    );
+    if (!scriptData) {
+      throw {
+        message: `Nenhum dos nós ${nodesToTry.join(
+          ", "
+        )} foi encontrado ou está vazio.`,
+      };
+    }
 
-    // console.log("INFO", info, info[0]); //temporary
+    console.log(scriptData);
+
+    const rawData = scriptData.slice(31).replace(/'/g, '"').replace(";", "");
+    info = await JSON.parse(rawData);
+
     const companyShareholdingDatatable = $("#table-company-base-shareholding");
     const companyId = companyShareholdingDatatable.attr("data-company-id");
     const { ticker, type, id } = info[0];
+
     const dados_do_ticker = {
       vticker: ticker,
       vtype: type,
       vid: id,
       vcompanyId: companyId,
     };
+
     return dados_do_ticker;
   } catch (e) {
     const erro = {
@@ -74,7 +80,7 @@ async function busca_dados_do_ticker(ticker_param) {
       message: "Erro na Etapa 1",
       errorMessage: e.message,
     };
-    //criar uma pasta node/ dentro de data/
+
     writeContentWithNewLines(JSON.stringify(erro), "./logError.txt");
     throw e;
   }
