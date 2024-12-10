@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.maisdividendos.stock_api.dtos.StockPriceResponse;
+import com.maisdividendos.stock_api.entities.StockBrapiInfo;
 import com.maisdividendos.stock_api.entities.StockPrice;
+import com.maisdividendos.stock_api.repository.BrapiRepository;
 import com.maisdividendos.stock_api.repository.StockRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -19,15 +21,23 @@ public class StockService {
     @Autowired
     private StockRepository repository;
 
+    @Autowired
+    private BrapiRepository brapiRepository;
+
     public StockPriceResponse getPriceByTicker(String ticker) {
         Optional<StockPrice> price = repository.findByTicker(ticker);
+        Optional<StockBrapiInfo> brapi = brapiRepository.findBySymbol(ticker);
+
         System.out.println(price);
         if (price.isEmpty()) {
             throw new EntityNotFoundException("Ticker inválido.");
         }
         StockPrice stock = price.get();
+        StockBrapiInfo brapiStock = brapi.get();
+
         System.out.println(stock.getId());
-        return new StockPriceResponse(stock.getTicker(), stock.getPrice(), stock.getLastUpdate());
+        return new StockPriceResponse(stock.getTicker(), stock.getPrice(), stock.getLastUpdate(),
+                brapiStock.getRegularMarketChangePercent());
     }
 
     public List<StockPriceResponse> getPrices() {
@@ -37,12 +47,16 @@ public class StockService {
         List<String> ranking_mock = Arrays.asList("LREN3", "B3SA3");
 
         for (String ticker : ranking_mock) {
+            Optional<StockBrapiInfo> brapi = brapiRepository.findBySymbol(ticker);
             Optional<StockPrice> price = repository.findByTicker(ticker);
-            if (price.isPresent()) {
+            if (price.isPresent() && brapi.isPresent()) {
                 StockPrice stock = price.get();
-                responses.add(new StockPriceResponse(stock.getTicker(), stock.getPrice(), stock.getLastUpdate()));
+                StockBrapiInfo brapiStock = brapi.get();
+                responses.add(new StockPriceResponse(stock.getTicker(), stock.getPrice(), stock.getLastUpdate(),
+                        brapiStock.getRegularMarketChangePercent()));
             }
         }
+        System.out.println(responses);
         return responses;
     }
 }

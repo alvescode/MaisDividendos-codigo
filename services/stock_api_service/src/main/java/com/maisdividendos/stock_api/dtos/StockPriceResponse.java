@@ -11,4 +11,5 @@ public class StockPriceResponse {
     private String ticker;
     private String price;
     private String lastUpdate;
+    private Double regularMarketChangePercent;
 }

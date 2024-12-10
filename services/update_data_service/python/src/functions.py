@@ -25,6 +25,12 @@ def envia_df_para_banco(df, table, write):
     except Exception as e:
         print(f"Erro ao enviar dados para o banco: {e}")
 
+def trata_dados_do_ticker_brapi(dados_brapi):
+    print(f'DADOS 2 : {dados_brapi}, TIPO: {type(dados_brapi)}')
+    dados_brapi = pd.DataFrame([dados_brapi])
+    print('df',dados_brapi)
+    envia_df_para_banco(dados_brapi,'brapi','a')
+        
 def trata_dados_do_ticker(response1):
     response1 = pd.DataFrame([response1])
     print(response1)

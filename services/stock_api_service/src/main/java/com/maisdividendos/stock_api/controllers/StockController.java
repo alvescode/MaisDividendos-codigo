@@ -23,22 +23,21 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     @GetMapping("/{ticker}")
     public ResponseEntity<StockPriceResponse> getPriceByTicker(@PathVariable String ticker) {
         System.out.println(ticker);
         StockPriceResponse response = stockService.getPriceByTicker(ticker);
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(response);
     }
-    // fazer tratamento de erros nos endpoints
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     @GetMapping("/prices")
     public ResponseEntity<Map<String, List<StockPriceResponse>>> getPrices() {
         List<StockPriceResponse> serviceResponse = stockService.getPrices();
         Map<String, List<StockPriceResponse>> response = new HashMap<>();
         response.put("prices", serviceResponse);
+        System.out.println(response);
         return ResponseEntity.status(HttpStatusCode.valueOf(200)).body(response);
     }
-    // intergração com a brapi para pegar a percentagem
 }

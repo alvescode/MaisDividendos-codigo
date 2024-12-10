@@ -3,7 +3,8 @@ import asyncio
 import httpx
 import json
 import os
-from functions import trata_dados_financeiros,trata_dados_do_ticker,trata_preco_da_acao,trata_dados_indicadores,trata_dados_dividendos,trata_dados_dividend_yeld
+from functions import trata_dados_financeiros,trata_dados_do_ticker,trata_preco_da_acao,trata_dados_indicadores,trata_dados_dividendos,trata_dados_dividend_yeld,trata_dados_do_ticker_brapi
+
 node_port = os.getenv('node_port')
 
 async def fetch(url,timeout=500):
@@ -24,13 +25,15 @@ def main():
         main_result = asyncio.run(get_data(t))
         data = json.loads(main_result)
         print(f'Dados Recebidos para {t}.')
-        print(data["dados_do_ticker"])
+        print(data["dados_brapi"])
         trata_dados_do_ticker(data["dados_do_ticker"])
         trata_preco_da_acao(data["dados_do_ticker"]["vticker"],data["dados_preco_da_acao"])
         trata_dados_financeiros(data["dados_do_ticker"]["vticker"],data["dados_financeiros"])
         trata_dados_indicadores(data["dados_do_ticker"],data["dados_indicadores"])
         trata_dados_dividendos(data["dados_do_ticker"]["vticker"],data["dados_dividendos"])
         trata_dados_dividend_yeld(data["dados_do_ticker"]["vticker"],data["dados_dividend_yeld"])
+        print(f'DADOS 1 : {data["dados_brapi"]}')
+        trata_dados_do_ticker_brapi(data["dados_brapi"])
     
     print('Tarefa Terminou.')
     while True:

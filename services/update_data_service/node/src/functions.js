@@ -21,6 +21,27 @@ function writeContentWithNewLines(content, filePath) {
   });
 }
 
+async function busca_dados_brapi(vticker) {
+  const baseURL = "https://brapi.dev/api";
+
+  const data = await fetch(
+    `${baseURL}/quote/${vticker}?token=2zC8uokBMZCcThw3CBtzVC`
+  );
+
+  const dataJSON = await data.json();
+  const { results } = dataJSON;
+  const response = {
+    symbol: results[0]["symbol"],
+    regularMarketChangePercent: results[0]["regularMarketChangePercent"],
+    regularMarketPrice: results[0]["regularMarketPrice"],
+    logourl: results[0]["logourl"],
+  };
+
+  console.log(`print da repsonse de busca dados brapi: `, response);
+
+  return response;
+}
+
 async function busca_dados_do_ticker(ticker_param) {
   console.log(ticker_param);
   let info;
@@ -179,6 +200,7 @@ async function busca_dados_dividend_yeld(ticker) {
     };
   }
 }
+
 export async function main(ticker_param) {
   try {
     const dados_do_ticker = await busca_dados_do_ticker(ticker_param);
@@ -189,12 +211,14 @@ export async function main(ticker_param) {
       dados_indicadores,
       dados_dividendos,
       dados_dividend_yeld,
+      dados_brapi,
     ] = await Promise.all([
       busca_preco_da_acao(vid),
       busca_dados_financeiros(vcompanyId),
       busca_dados_indicadores(vid),
       busca_dados_dividendos(vticker),
       busca_dados_dividend_yeld(vticker),
+      busca_dados_brapi(vticker),
     ]);
 
     const response = {
@@ -204,6 +228,7 @@ export async function main(ticker_param) {
       dados_indicadores,
       dados_dividendos,
       dados_dividend_yeld,
+      dados_brapi,
     };
     return response;
   } catch (err) {
