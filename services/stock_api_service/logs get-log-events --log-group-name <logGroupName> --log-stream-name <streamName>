@@ -1,0 +1,105 @@
+{
+    "tasks": [
+        {
+            "attachments": [
+                {
+                    "id": "edc2e672-eb3b-4c66-b9e5-75c90b86e68f",
+                    "type": "ElasticNetworkInterface",
+                    "status": "DELETED",
+                    "details": [
+                        {
+                            "name": "subnetId",
+                            "value": "subnet-010fbdcd53a581021"
+                        },
+                        {
+                            "name": "networkInterfaceId",
+                            "value": "eni-08ccc7b8e2c14b48b"
+                        },
+                        {
+                            "name": "macAddress",
+                            "value": "0e:76:e5:0b:12:65"
+                        },
+                        {
+                            "name": "privateDnsName",
+                            "value": "ip-172-31-35-11.ec2.internal"
+                        },
+                        {
+                            "name": "privateIPv4Address",
+                            "value": "172.31.35.11"
+                        }
+                    ]
+                }
+            ],
+            "attributes": [
+                {
+                    "name": "ecs.cpu-architecture",
+                    "value": "x86_64"
+                }
+            ],
+            "availabilityZone": "us-east-1b",
+            "capacityProviderName": "FARGATE",
+            "clusterArn": "arn:aws:ecs:us-east-1:585768171490:cluster/mais-dividendos-cluster",
+            "connectivity": "CONNECTED",
+            "connectivityAt": "2024-11-28T19:43:35.020000-03:00",
+            "containers": [
+                {
+                    "containerArn": "arn:aws:ecs:us-east-1:585768171490:container/mais-dividendos-cluster/0b4d7544db774ae08a112609ee13885e/55c9fa40-021c-4c89-9c10-a56c0235296e",
+                    "taskArn": "arn:aws:ecs:us-east-1:585768171490:task/mais-dividendos-cluster/0b4d7544db774ae08a112609ee13885e",
+                    "name": "mais-dividendos-api",
+                    "image": "585768171490.dkr.ecr.us-east-1.amazonaws.com/mais-dividendos",
+                    "imageDigest": "sha256:2d37b46dd4fc658c143f309bda01ad91f0ba327ce128b539d258291f1a468c12",
+                    "runtimeId": "0b4d7544db774ae08a112609ee13885e-1164521502",
+                    "lastStatus": "STOPPED",
+                    "exitCode": 1,
+                    "networkBindings": [],
+                    "networkInterfaces": [
+                        {
+                            "attachmentId": "edc2e672-eb3b-4c66-b9e5-75c90b86e68f",
+                            "privateIpv4Address": "172.31.35.11"
+                        }
+                    ],
+                    "healthStatus": "UNKNOWN",
+                    "cpu": "0"
+                }
+            ],
+            "cpu": "1024",
+            "createdAt": "2024-11-28T19:43:31.537000-03:00",
+            "desiredStatus": "STOPPED",
+            "enableExecuteCommand": false,
+            "executionStoppedAt": "2024-11-28T19:44:21.327000-03:00",
+            "group": "family:task",
+            "healthStatus": "UNKNOWN",
+            "lastStatus": "STOPPED",
+            "launchType": "FARGATE",
+            "memory": "3072",
+            "overrides": {
+                "containerOverrides": [
+                    {
+                        "name": "mais-dividendos-api"
+                    }
+                ],
+                "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.4.0",
+            "platformFamily": "Linux",
+            "pullStartedAt": "2024-11-28T19:43:43.340000-03:00",
+            "pullStoppedAt": "2024-11-28T19:44:03.220000-03:00",
+            "startedAt": "2024-11-28T19:44:04.717000-03:00",
+            "stopCode": "EssentialContainerExited",
+            "stoppedAt": "2024-11-28T19:44:46.397000-03:00",
+            "stoppedReason": "Essential container in task exited",
+            "stoppingAt": "2024-11-28T19:44:31.366000-03:00",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:us-east-1:585768171490:task/mais-dividendos-cluster/0b4d7544db774ae08a112609ee13885e",
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:585768171490:task-definition/task:1",
+            "version": 5,
+            "ephemeralStorage": {
+                "sizeInGiB": 20
+            },
+            "fargateEphemeralStorage": {
+                "sizeInGiB": 20
+            }
+        }
+    ],
+    "failures": []
+}
