@@ -1,13 +1,16 @@
-package com.maisdividendos.stock_api;
-
+import io.restassured.RestAssured;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class StockApiApplicationTests {
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
+class StockEndpointTest {
 
 	@Test
-	void contextLoads() {
-	}
+	void testGetStockBBAS3_StatusCode() {
+		String baseUrl = "http://ec2-3-93-178-200.compute-1.amazonaws.com:8080/api/stock/BBAS3";
 
+		int statusCode = RestAssured.get(baseUrl).getStatusCode();
+		assertThat(statusCode, is(200));
+	}
 }
