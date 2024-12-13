@@ -23,7 +23,7 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     @GetMapping("/{ticker}")
     public ResponseEntity<StockPriceResponse> getPriceByTicker(@PathVariable String ticker) {
         System.out.println(ticker);
@@ -32,7 +32,7 @@ public class StockController {
     }
     // fazer tratamento de erros nos endpoints
 
-    @CrossOrigin(origins = "http://localhost:3000")
+    @CrossOrigin(origins = "*")
     @GetMapping("/prices")
     public ResponseEntity<Map<String, List<StockPriceResponse>>> getPrices() {
         List<StockPriceResponse> serviceResponse = stockService.getPrices();
